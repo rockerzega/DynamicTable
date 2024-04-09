@@ -1,0 +1,281 @@
+import React, { useState, useEffect } from 'react';
+import './estilos.css';
+import { PlusOutlined, MinusOutlined, FilterOutlined } from '@ant-design/icons';
+
+const TableComponent = ({
+  dataSource,
+  headers,
+  pagination,
+  activeSelectedRows,
+  loading,
+  expandible,
+}) => {
+  const [visibleFilter, setVisibleFilter] = useState(false);
+  const [filters, setFilters] = useState({});
+  const [selectAll, setSelectAll] = useState(false);
+  const [indeterminate, setIndeterminate] = useState(false);
+  const [expandItems, setExpandItems] = useState([]);
+
+  useEffect(() => {
+    if (dataSource && dataSource.length > 0) {
+      setExpandItems(dataSource.map((x) => ({ active: false, check: false, id: x?._id || undefined })));
+    }
+  }, [dataSource]);
+
+
+  const selectItemsMenu = ({ key }) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [key]: [...prevFilters[key], key],
+    }));
+  };
+
+
+  const chooseFilter = (e, item, dropItem) => {
+    e.stopPropagation();
+    setFilters((prevFilters) => {
+      const newFilters = { ...prevFilters };
+      if (!newFilters[item.key]?.includes(dropItem.value)) {
+        newFilters[item.key] = [dropItem.value];
+      } else {
+        newFilters[item.key] = newFilters[item.key].filter((x) => x !== dropItem.value);
+      }
+      return newFilters;
+    });
+  };
+
+  const onChangeCheck = (ev, index) => {
+    setExpandItems((prevItems) =>
+      prevItems.map((item, i) =>
+        i === index ? { ...item, check: ev.target.checked } : item
+      )
+    );
+
+    const countTrue = expandItems.filter((x) => x.check);
+    setIndeterminate(
+      countTrue.length > 0 && countTrue.length !== expandItems.length
+    );
+    if (countTrue.length === expandItems.length) {
+      setSelectAll(true);
+    }
+  };
+
+  const onCheckAllChange = (e) => {
+    setIndeterminate(false);
+    setSelectAll(e.target.checked);
+    setExpandItems((prevItems) =>
+      prevItems.map((item) => ({ ...item, check: e.target.checked }))
+    );
+  };
+
+  const onChange = (val) => {
+    // Handle pagination change
+  };
+
+  const expandRow = (index) => {
+    setExpandItems((prevItems) =>
+      prevItems.map((item, i) =>
+        i === index ? { ...item, active: !item.active } : item
+      )
+    );
+  };
+
+
+  return (
+    <div className="flex justify-center">
+      <div className="w-full">
+        <div className="overflow-auto lg:overflow-visible">
+          {loading && <div>Loading...</div>}
+          <table
+            id="g-table"
+            className="table w-full text-gray-500 border-separate space-y-6 text-sm"
+          >
+            <thead className="bg-gray-100 text-black">
+              <tr>
+                {activeSelectedRows && (
+                  <th className="text-center">
+                    <input
+                      type="checkbox"
+                      indeterminate={indeterminate}
+                      checked={selectAll}
+                      onChange={onCheckAllChange}
+                    />
+                  </th>
+                )}
+
+                {expandible && <th className="p-3 text-center" />}
+                {headers.map((item, i) => (
+                  <th key={i} className="p-3 text-center">
+                    <div className="flex items-center justify-center">
+                      {item.title}
+                      {item.filters && item.filters.length > 0 && (
+                        <div
+                          className="relative"
+                          onMouseEnter={() => setVisibleFilter(true)}
+                          onMouseLeave={() => setVisibleFilter(false)}
+                        >
+
+                          <button className="flex items-center justify-center">
+                            <FilterOutlined className="ml-3 cursor-pointer" />
+                          </button>
+
+                          {visibleFilter && (
+                            <div className="absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                              <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                {item.filters.map((dropItem, iDrop) => (
+                                  <div
+                                    key={iDrop}
+                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                    role="menuitem"
+                                    onClick={(e) => chooseFilter(e, item, dropItem)}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      checked={filters[item.key]?.includes(dropItem.value)}
+                                      className="mr-3"
+                                    />
+                                    {dropItem.text}
+                                  </div>
+                                ))}
+                                <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+                                  <span>Limpiar</span>
+                                </div>
+                                <div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
+                                  <span>Filtrar</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+
+            {/* <tbody>
+              {dataSource.map((item, i) => (
+                <>
+                  <tr className="espacio" />
+                  <tr className="bg-gray-100">
+                    {activeSelectedRows && (
+                      <td
+                        className="text-center p-3 break-words"
+                        style={{ width: '10px', maxWidth: '10px' }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={expandItems[i].check}
+                          disabled={selectAll}
+                          onChange={(ev) => onChangeCheck(ev, i)}
+                        />
+                      </td>
+                    )}
+                    {expandible && (
+                      <td style={{
+                        overflowWrap: 'break-word',
+                        width: '10px',
+                        maxWidth: '10px',
+                        padding: '0.75rem',
+                      }}>
+                        <slot name="expand" item={item} />
+                        <button
+                          className="flex items-center justify-center"
+                          onClick={() => expandRow(i)}
+                        >
+                          {!expandItems[i].active && <PlusOutlined />}
+                          {expandItems[i].active && <MinusOutlined />}
+                        </button>
+                      </td>
+                    )}
+
+                    {headers.map((hed, hedIndex) => (
+                      <td
+                        key={hedIndex}
+                        className="p-3 break-words"
+                        style={{
+                          width: `${hed.width ? `${hed.width}px` : '50px'}`,
+                          maxWidth: `${hed.width ? `${hed.width}px` : '50px'}`,
+                        }}
+                      >
+                        {hed.scopedSlots && hed.scopedSlots.customRender ? (
+                          <slot
+                            name={hed.scopedSlots.customRender}
+                            item={item}
+                          />
+                        ) : (
+                          <>{item[hed.key]}</>
+                        )}
+</td>
+                    ))}
+                  </tr>
+
+                  {expandItems[i].active && (
+                    <tr
+                      key={`expandable-${i}`}
+                      className="bg-white rounded-none expandable-row"
+                    >
+                      <td
+                        colSpan={headers.length + (expandible ? 1 : 0) + (activeSelectedRows ? 1 : 0)}
+                        className="border-x-2 shadow border-gray-200 rounded-none"
+                      >
+                        <div className="expandable-content transition-all duration-300 p-5 rounded-none">
+                          <slot name="expandContent" item={item} />
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </>
+              ))}
+            </tbody> */}
+          </table>
+
+          {/*   */}
+
+          {/* {dataSource.length > 0 && pagination.total > 0 &&
+            (pagination.total > pagination.defaultPageSize) && (
+            <div className="mt-5 text-right">
+              <button
+                className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                onClick={() => onChange(1)}
+              >
+                Primero
+              </button>
+
+              <button
+                className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                onClick={() => onChange(pagination.actual - 1)}
+                disabled={pagination.actual === 1}
+              >
+                Anterior
+              </button>
+
+              <span className="px-4 py-2 text-sm text-gray-700">
+                {pagination.actual} de {Math.ceil(pagination.total / pagination.defaultPageSize)}
+              </span>
+
+              <button
+                className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                onClick={() => onChange(pagination.actual + 1)}
+                disabled={pagination.actual === Math.ceil(pagination.total / pagination.defaultPageSize)}
+              >
+                Siguiente
+              </button>
+
+              <button
+                className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                onClick={() => onChange(Math.ceil(pagination.total / pagination.defaultPageSize))}
+              >
+                Último
+              </button>
+            </div>
+          )} */}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+export default TableComponent;

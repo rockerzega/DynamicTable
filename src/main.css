@@ -1,0 +1,120 @@
+.table {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  list-style: none;
+  font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
+  background: #ffffff;
+  border-radius: 8px 8px 0 0;
+  width: 100%;
+}
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 8px;
+  text-align: left;
+}
+.table th {
+    position: relative;
+    color: rgba(0, 0, 0, 0.88);
+    font-weight: 600;
+    text-align: start;
+    background: #fafafa;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.table tbody tr:hover {
+  background-color: #ddd;
+}
+
+.table-mobile {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.88);
+}
+
+.table-mobile th, .table-mobile td {
+  border: 1px solid #ddd;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 8px;
+  text-align: left;
+}
+
+.table-div {
+  display: flex;
+  padding-bottom: 0.5rem;
+}
+
+/* .content {
+  transition: height 0.3s ease-out;
+  overflow: hidden;
+}
+
+.content.expanded {
+  height: auto;
+} */
+
+content {
+  transition: height 3s ease-out;
+  width: 100px;
+  height: 100px;
+  background: #f92672;
+  transition: width 2s, height 2s, margin 2s;
+  margin: 50px auto 0;
+}
+.content.expand{
+  width: 100%;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.aparecer {
+  opacity: 0;
+  animation: aparecer 3s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.expandir {
+  height: 0;
+  overflow: hidden;
+  animation: expandir 3s ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes expandir {
+  from {
+    height: 0;
+  }
+  to {
+    height: 100%;
+  }
+}
+
+.expanded-row {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.expanded-row.expanded {
+  max-height: 500px;
+  transition: max-height 0.3s ease-in;
+}
