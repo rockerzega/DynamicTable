@@ -22,3 +22,11 @@ tr th:nth-child(1) {
 .espacio{
   height:15px;
 }
+
+.flotante {
+  display:scroll;
+      position:fixed;
+      bottom:320px;
+      right:0px;
+}
+

@@ -54,6 +54,20 @@
   padding-bottom: 0.5rem;
 }
 
+.filtro-icon{
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-block: -4px;
+  margin-inline: 4px -8px;
+  padding: 0 4px;
+  color: rgba(0, 0, 0, 0.29);
+  font-size: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
 /* .content {
   transition: height 0.3s ease-out;
   overflow: hidden;

@@ -1,20 +1,32 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import './main.css'
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons'
+import { PlusOutlined, MinusOutlined, CaretLeftOutlined, CaretRightOutlined, FilterOutlined } from '@ant-design/icons'
 
 const DynamicTable = ({ children, ...props }) => {
-  const { columns, menuOptions, expandable, ...otherProps } = props;
+  const { columns, menuOptions, expandable, filter , pagination, onChange, ...otherProps } = props;
   const [expandedRows, setExpandedRows] = useState(() => new Array(props.dataSource.length).fill(false));
-
-
+  console.log(pagination)
   const toggleRowExpanded = (index) => {
     const newExpandedRows = [...expandedRows]
     newExpandedRows[index] = !newExpandedRows[index]
     setExpandedRows(newExpandedRows)
   }
+  const [currentPage, setCurrentPage] = useState(pagination.current)
+  const totalPages = useRef(Math.ceil(pagination.total/pagination.defaultPageSize))
+  const handlePages = (newPage) => {
+    setCurrentPage(newPage)
+    onChange({ current: newPage, pageSize: pagination.defaultPageSize })
+  }
+  
+
   return (
     <div style={{ display: 'flex' }}>
-        <div>
+        <div  className={props.className || ''}>
+        {filter && filter.button && (
+          <div>
+            {filter.button}
+          </div>
+        )}
           <table className={'table'}>
             <thead key="mobile-table-head">
               <tr>
@@ -36,7 +48,7 @@ const DynamicTable = ({ children, ...props }) => {
                               <div key={index} className="table-div" style={{
                                 justifyContent: `${column.align || 'start'}`,
                               }}>
-                                {column.title && <><b>{column.title}</b>:</> } {render}
+                                {column.title && <><b>{column.title}</b>:</> } {render} <div className="filtro-icon">{<FilterOutlined />}</div>
                               </div>
                             )
                           } catch (error) {
@@ -92,6 +104,15 @@ const DynamicTable = ({ children, ...props }) => {
               {children}
             </tbody>
           </table>
+          {pagination.total > 0 && (<div className="pagination">
+            <button onClick={()=> handlePages(Math.max(pagination.current - 1, 1))} disabled={pagination.current === 1}>
+              {<CaretLeftOutlined />}
+            </button>
+            <span>{currentPage} de {Math.ceil(pagination.total/pagination.defaultPageSize)}</span>
+            <button onClick={() => handlePages(Math.min(pagination.current + 1, Math.ceil(pagination.total/pagination.defaultPageSize)))} disabled={pagination.current === totalPages.current}>
+              {<CaretRightOutlined />}
+            </button>
+          </div>)}
         </div>
     </div>
   )
