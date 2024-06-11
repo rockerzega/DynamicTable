@@ -1,0 +1,66 @@
+import React, { useMemo, useState } from 'react'
+import { DATE_FORMAT } from '../constants'
+import CalendarContext from '../context/CalendarContext'
+import dayjs from 'dayjs'
+import { formatDate } from '../helpers'
+
+const Calendar = ({
+  primaryColor = "blue",
+  value = null,
+  onChange,
+  useRange = true,
+  showFooter = false,
+  showShortcuts = false,
+  configs = undefined,
+  asSingle = false,
+  placeholder = null,
+  separator = "~",
+  startFrom = null,
+  disabled = false,
+  inputClassName = null,
+  containerClassName = null,
+  toggleClassName = null,
+  toggleIcon = undefined,
+  displayFormat = DATE_FORMAT,
+  readOnly = false,
+  minDate = null,
+  maxDate = null,
+  dateLooking = "forward",
+  disabledDates = null,
+  inputId,
+  inputName,
+  startWeekOn = "sun",
+  classNames = undefined,
+  popoverDirection = undefined
+}) => {
+  // States
+  const [dayHover, setDayHover] = useState(null)
+  const [inputText, setInputText] = useState('')
+  const [period, setPeriod] = useState({
+    start: null,
+    end: null
+  })
+   
+
+  // Callbacks
+  
+  
+
+  // Memos
+  const calendarContext = useMemo(() => {
+    return {
+      // Methods
+      changeDayHover: (newDay) => setDayHover(newDay),
+      changePeriod: (newPeriod) => setPeriod(newPeriod),
+      changeInputText: (newText) => setInputText(newText),
+    }
+  }, [])
+
+  return (
+    <CalendarContext.Provider value={calendarContext}>
+      Calendar
+    </CalendarContext.Provider>
+  )
+}
+
+export default Calendar
