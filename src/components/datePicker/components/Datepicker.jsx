@@ -7,7 +7,7 @@ import Shortcuts from "./Shortcuts";
 import { COLORS, DATE_FORMAT, DEFAULT_COLOR, LANGUAGE } from "../constants";
 import DatepickerContext from "../contexts/DatepickerContext"
 import { formatDate, nextMonth, previousMonth } from "../helpers";
-import useOnClickOutside from "../hooks";
+import useOnClickOutside from "../../calendar/hooks";
 
 import { Arrow, VerticalDash } from "./utils";
 

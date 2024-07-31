@@ -1,6 +1,9 @@
 .flex{
   display: flex;
 }
+.flex-1{
+  flex: 1 1 0;
+}
 .flex-col{
   flex-direction: column;
 }
@@ -33,6 +36,9 @@
 }
 .justify-between{
   justify-content: space-between;
+}
+.justify-end{
+  justify-content: end;
 }
 .grid{
   display: grid;
@@ -76,6 +82,24 @@
 }
 .w-full{
   width: 100%;
+}
+.w-0\.5{
+  width: 50%;
+}
+.w-0\.25{
+  width: 25%;
+}
+.w-0\.125{
+  width: 12.5%;
+}
+.w-1\/2{
+  width: 50%;
+}
+.w-1\/5{
+  width: 20%;
+}
+.w-0\.9{
+  width: 90%;
 }
 .w-1-2{
   width: 0.125rem;
@@ -124,6 +148,12 @@
 .m-1{
   margin: 0.25rem;
 }
+.ml-0{
+  margin-left:0;
+}
+.ml-2{
+  margin-left: 0.5rem;
+}
 .my-1{
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
@@ -170,9 +200,17 @@
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
 }
+.py-1\.5{
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
 .py-2{
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+.py-2\.1{
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
 }
 .py-3{
   padding-top: 0.75rem;
@@ -389,15 +427,24 @@
 .overflow-y-auto{
   overflow-y: auto;
 }
-.space-x-1{
+.space-x-2 {
+  padding-left: 0;
+}
+.space-x-2 > div {
+  margin-left: 0.5rem;
+}
+/* .space-x-1\.5 {
+  padding-left: 0px;
+}
+.space-x-1\.5 > div{
   margin-left: 0.375rem;
 }
-.space-x-2{
+.space-x-2 > div{
   margin-left: 0.5rem;
 }
 .space-y-4{
   margin-top: 1rem;
-}
+} */
 .tracking-wide{
   letter-spacing: 0.025em;
 }
@@ -429,4 +476,48 @@
 }
 .opacity-0{
   opacity: 0;
+}
+.right-0{
+  right: 0;
+}
+/*Estilos en el paginador*/
+.pagination {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-item {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.page-item:hover {
+  background-color: #f0f0f0;
+}
+
+.page-item:disabled {
+  cursor: not-allowed;
+  color: #ccc;
+  border-color: #eee;
+}
+
+.page-item.active {
+  border-color: orange;
+  color: orange;
+}
+
+.page-item.active:hover {
+  background-color: white;
+}
+
+.dots {
+  padding: 8px 12px;
+  color: #999;
 }

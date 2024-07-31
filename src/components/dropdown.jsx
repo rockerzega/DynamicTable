@@ -14,6 +14,8 @@ const Dropdown = ({ data = [], onChange = ()=>{} }) => {
   const loadOptions = () => {
     if(data.length===0)
       return
+    console.log('modal options')
+    console.log(data)
     const options = data.map((option) => ({
       value: option.value,
       text: option.text,
@@ -92,7 +94,7 @@ const Dropdown = ({ data = [], onChange = ()=>{} }) => {
                   {selected.length === 0 ? (
                     <div className="flex-1">
                       <input
-                        placeholder="Selecione un filtro"
+                        placeholder="Seleccione un filtro"
                         className="bg-transparent p-1 px-2 appearance-none outline-none h-full w-full text-gray-800"
                         value={selectedValues()}
                         readOnly

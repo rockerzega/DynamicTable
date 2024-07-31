@@ -137,11 +137,12 @@ content {
   background: none;
   border: none;
   font-size: 24px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .option-buttons{
   display: flex;
   justify-content: end;
-  gap: 5px;
   /* align-items: end; */
 }

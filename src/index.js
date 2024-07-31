@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import './main.css'
+import './css/other.css'
 import CustomModal from './components/modal'
 import { PlusOutlined, MinusOutlined, CaretLeftOutlined, CaretRightOutlined, SortAscendingOutlined } from '@ant-design/icons'
-// import CalendarComponent from './components/calendar-component'
-import Calendar from './components/calendar'
+import Pagination from "./components/paginator"
+import Spinner from './components/Spinner'
 
 const DynamicTable = ({ children, ...props }) => {
   const { columns, menuOptions, expandable, filters , pagination, onChange, ...otherProps } = props
@@ -13,10 +14,14 @@ const DynamicTable = ({ children, ...props }) => {
     newExpandedRows[index] = !newExpandedRows[index]
     setExpandedRows(newExpandedRows)
   }
+  const [primaryColor, setPrimaryColor] = useState(null)
   const [currentPage, setCurrentPage] = useState(pagination.current)
   const totalPages = useRef(Math.ceil(pagination.total/pagination.defaultPageSize))
   const [open, setOpen] = useState(true)
+  const [page, setPage] = useState(1)
+
   const hasFilter = columns.some(item => item.filters)
+  const hasFilterDropdown = columns.some(item => item.filterDropdown)
   const modalData = []
   if(hasFilter) {
     columns.forEach((item, index) => {
@@ -26,6 +31,20 @@ const DynamicTable = ({ children, ...props }) => {
           value: item.dataIndex,
           filters: item.filters
         })  
+      }
+    })
+  }
+  if (hasFilterDropdown) {
+    console.log('este es el filterDropdown')
+    columns.forEach((item, index) => {
+      if(item.filterDropdown) {
+        modalData.push({
+          label: item.title,
+          value: item.dataIndex,
+          filterDropdown: item.filterDropdown,
+        })
+        console.log('modal filterDropdown', item.title)
+        console.log(item.filterDropdown)
       }
     })
   }
@@ -42,19 +61,29 @@ const DynamicTable = ({ children, ...props }) => {
     onChange({ current: newPage, pageSize: pagination.defaultPageSize })
   }
   
+  useEffect(() => {
+    const button = document.querySelector('.ant-btn-primary');
+    if (button) {
+      const style = window.getComputedStyle(button)
+      setPrimaryColor(style.backgroundColor)
+    }
+  }, [])
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <div id="options-buttons"className="option-buttons">
-        {hasFilter
-          && (<CustomModal
-              data={modalData}
-              onOk={onOk}
-            />)
-        }
-        <button className="open-modal">{<SortAscendingOutlined />}</button>
+    <div>
+      <div id="ribbon-buttons" className="flex">
+        <div style={{ width: '80%' }}></div>
+        <div id="buttons" className="flex justify-end w-1/5">
+          {hasFilter
+            && (<CustomModal
+                data={modalData}
+                onOk={onOk}
+                color={primaryColor}
+              />)
+          }
+          <button className="open-modal ml-2">{<SortAscendingOutlined />}</button>
+        </div>
       </div>
-      <Calendar />
       <div  className={props.className || ''}>
         <table className={'table'}>
           <thead key="mobile-table-head">
@@ -62,7 +91,7 @@ const DynamicTable = ({ children, ...props }) => {
               <th key="mobile-head-cols" style={{ zIndex: 1 }}>Datos</th>
             </tr>
           </thead>
-          <tbody>
+          {!otherProps.isLoading ? (<tbody>
             {props.dataSource.map((item, index) => (
               <React.Fragment key={item.id}>
                 <tr key={item.key  || `row${index}`}>
@@ -132,17 +161,15 @@ const DynamicTable = ({ children, ...props }) => {
               </React.Fragment>
             ))}
             {children}
-          </tbody>
+          </tbody>) : <Spinner color={primaryColor} />}
         </table>
-        {pagination.total > 0 && (<div className="pagination">
-          <button onClick={()=> handlePages(Math.max(pagination.current - 1, 1))} disabled={pagination.current === 1}>
-            {<CaretLeftOutlined />}
-          </button>
-          <span>{currentPage} de {Math.ceil(pagination.total/pagination.defaultPageSize)}</span>
-          <button onClick={() => handlePages(Math.min(pagination.current + 1, Math.ceil(pagination.total/pagination.defaultPageSize)))} disabled={pagination.current === totalPages.current}>
-            {<CaretRightOutlined />}
-          </button>
-        </div>)}
+        {pagination.total > 0 && (
+          <Pagination
+            total={Math.ceil(pagination.total / pagination.defaultPageSize)}
+            current={pagination.current}
+            onPageChange={(page) => handlePages(page)}
+          />
+        )}
       </div>
     </div>
   )

@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
-
-import { generateArrayNumber } from '../../helpers'
 import { RoundedButton } from '../utils'
-
+import React, { useContext } from 'react'
+import { generateArrayNumber } from '../../helpers'
 import CalendarContext from '../../context/CalendarContext'
+
+
 
 const Years = ({ year, currentYear, minYear, maxYear, clickYear }) => {
 	const { dateLooking } = useContext(CalendarContext)
@@ -32,7 +32,7 @@ const Years = ({ year, currentYear, minYear, maxYear, clickYear }) => {
 			{generateArrayNumber(startDate, endDate).map((item, index) => (
 				<RoundedButton
 					key={index}
-					padding="py-3"
+					padding="0.75rem"
 					onClick={() => {
 						clickYear(item);
 					}}
