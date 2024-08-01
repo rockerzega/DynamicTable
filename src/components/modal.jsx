@@ -71,10 +71,12 @@ const CustomModal = ({ title = 'Custom modal', color = null, data = [], onOk }) 
 
             </div>
           </div>
-          {filOpt !== 'child' && (<div className="modal-footer">
-            <button onClick={handleOk} className="modal-button" style={
-              color ? { background: color } : {background: '#007bff'}
-            } >OK</button>
+          {!['child', 'none'].includes(filOpt) && (<div className="modal-footer">
+            <button onClick={handleOk} className="modal-button"
+              style={
+                color ? { background: color } : { background: '#007bff' }
+              }
+            >OK</button>
             {/* <button onClick={handleCancel} className="modal-button">Cancelar</button> */}
           </div>)}
         </div>

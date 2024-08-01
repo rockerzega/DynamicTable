@@ -103,7 +103,7 @@ const DynamicTable = ({ children, ...props }) => {
                             ? column.render(item[column.dataIndex], item)
                             : column.render(item)
                           return (
-                            <div key={index} className="table-div" style={{
+                            <div key={column.dataIndex + index} className="table-div" style={{
                               justifyContent: `${column.align || 'start'}`,
                             }}>
                               {column.title && <><b>{column.title}</b>:</> }
@@ -112,14 +112,14 @@ const DynamicTable = ({ children, ...props }) => {
                           )
                         } catch (error) {
                           return (
-                            <div key={index}>
+                            <div key={column.dataIndex + index}>
                               <b>{column.title}</b>: Fallido
                             </div>
                           )
                         }
                       }
                       return (
-                        <div key={index} className="table-div" style={{
+                        <div key={column.dataIndex + index} className="table-div" style={{
                           justifyContent: `${column.align || 'start'}`,
                         }}>
                           <b>{column.title}</b>: {item[column.dataIndex]}
