@@ -3,7 +3,7 @@ import '../css/modal.css'
 import Dropdown from './dropdown'
 import { FilterOutlined } from '@ant-design/icons'
 
-const CustomModal = ({ title = 'Custom modal', color = null, data = [], onOk }) => {
+const CustomModal = ({ title = 'Custom modal', color = undefined, data = [], onOk }) => {
   const [firstSelect, setFirstSelect] = useState('')
   const secondSelect = useRef([])
   const [listFilters, setListFilters] = useState([])
