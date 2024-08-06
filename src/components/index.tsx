@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { DynamicTableType } from '../types'
-import CustomModal from './modal'
+import ModalFilter from './ModalFilter'
 import { MinusOutlined, PlusOutlined, SortAscendingOutlined } from '@ant-design/icons'
 import Pagination from './paginator'
 import Spinner from './Spinner'
@@ -72,7 +72,9 @@ const DynamicTable: React.FC<DynamicTableType> = ({children, ...props }) => {
   }
   
   useEffect(() => {
-    const button = document.querySelector('.ant-btn-primary');
+    const button = document.querySelector('.ant-btn-primary')
+    console.log('columnas')
+    console.log(columns)
     if (button) {
       const style = window.getComputedStyle(button)
       setPrimaryColor(style.backgroundColor)
@@ -84,8 +86,8 @@ const DynamicTable: React.FC<DynamicTableType> = ({children, ...props }) => {
     <div id="ribbon-buttons" className="flex">
       <div style={{ width: '80%' }}></div>
       <div id="buttons" className="flex justify-end w-1/5">
-        {hasFilter
-          && (<CustomModal
+        {hasFilter || hasFilterDropdown
+          && (<ModalFilter
               data={modalData}
               onOk={onOk}
               color={primaryColor}
@@ -115,7 +117,7 @@ const DynamicTable: React.FC<DynamicTableType> = ({children, ...props }) => {
                       try {
                         const render = column.dataIndex
                           ? column.render(childItem[column.dataIndex], childItem)
-                          : column.render(childItem)
+                          : column.render('', childItem)
                         return (
                           <div key={column.dataIndex + index} className="table-div" style={{
                             justifyContent: `${column.align || 'start'}`,

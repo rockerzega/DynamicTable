@@ -4,7 +4,7 @@ export interface Columns {
   title: string
   dataIndex: string
   key: string
-  render?: (text: any, record?: any) => React.ReactNode
+  render?: (text: any, record: any) => React.ReactNode
   width?: number
   sorter?: boolean
   align?: 'left' | 'right' | 'center'

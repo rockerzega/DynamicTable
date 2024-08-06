@@ -1,17 +1,21 @@
-import React, {useRef, useState, useEffect} from 'react'
-import '../css/modal.css'
+import React, { useState, useRef, useEffect } from 'react'
 import Dropdown from './dropdown'
 import { FilterOutlined } from '@ant-design/icons'
 
-const CustomModal = ({ title = 'Filtro de datos', color = undefined, data = [], onOk }) => {
-  const [firstSelect, setFirstSelect] = useState('')
-  const secondSelect = useRef([])
+const ModalFilter: React.FC<{
+  title?: string
+  color?: string | undefined
+  data: any[]
+  onOk: (data: {firstSelect: string, secondSelect: string}) => void
+}> = ({ title = 'Filtro de datos', color = undefined, data = [], onOk }) => {
+  const [firstSelect, setFirstSelect] = useState<string>('')
+  const secondSelect = useRef<any>([])
   const [listFilters, setListFilters] = useState([])
-  const [child, setChild] = useState(null)
+  const [child, setChild] = useState<any>(null)
   const [filOpt, setFilOpt] = useState('none')
   const [open, setOpen] = useState(false)
 
-  const handleSecondSelectChange = (event) => {
+  const handleSecondSelectChange = (event: string | [string] | null) => {
     if (!event)
       return
     secondSelect.current =Array.isArray(event) ? event : [event]
@@ -32,12 +36,11 @@ const CustomModal = ({ title = 'Filtro de datos', color = undefined, data = [], 
     setListFilters(filters ? filters : [])
     setChild( filterDropdown
       ? React.cloneElement(filterDropdown, {
-        setSelectedKeys: (keys) => handleSecondSelectChange(keys),
+        setSelectedKeys: (keys: string | [string] | null) => handleSecondSelectChange(keys),
         confirm: () => handleOk(),
       }) 
       : null)
   }, [firstSelect, data])
-
   return (<>
     <button
       onClick={() => setOpen(true)}
@@ -77,11 +80,10 @@ const CustomModal = ({ title = 'Filtro de datos', color = undefined, data = [], 
                 color ? { background: color } : { background: '#007bff' }
               }
             >OK</button>
-            {/* <button onClick={handleCancel} className="modal-button">Cancelar</button> */}
           </div>)}
         </div>
       </div>)}
     </>)
 }
 
-export default CustomModal;
+export default ModalFilter
