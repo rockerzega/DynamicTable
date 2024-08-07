@@ -24,10 +24,12 @@ const Paginator: FC<{
             className={
               `page-item ${i === currentPage && !color ? 'active' : ''}`
             }
-            {...(i === currentPage && color) && { style : {
-              borderColor: color,
-              color,
-            }}}
+            {...(i === currentPage && color) && {
+              style: {
+                borderColor: color,
+                color,
+              }
+            }}
             onClick={() => handlePageChange(i)}
           >
             {i}
@@ -41,10 +43,12 @@ const Paginator: FC<{
           className={
             `page-item ${1 === currentPage && !color ? 'active' : ''}`
           }
-          {...(1 === currentPage && color) && { style : {
-            borderColor: color,
-            color,
-          }}}
+          {...(1 === currentPage && color) && {
+            style: {
+              borderColor: color,
+              color,
+            }
+          }}
           onClick={() => handlePageChange(1)}
         >
           1
@@ -55,8 +59,8 @@ const Paginator: FC<{
         pages.push(<span key="start-dots" className="dots">...</span>)
       }
 
-      let start = Math.max(2, currentPage - 1)
-      let end = Math.min(total - 1, currentPage + 1)
+      const start = Math.max(2, currentPage - 1)
+      const end = Math.min(total - 1, currentPage + 1)
 
       for (let i = start; i <= end; i++) {
         pages.push(
@@ -65,10 +69,12 @@ const Paginator: FC<{
             className={
               `page-item ${i === currentPage && !color ? 'active' : ''}`
             }
-            {...(i === currentPage && color) && { style : {
-              borderColor: color,
-              color,
-            }}}
+            {...(i === currentPage && color) && {
+              style: {
+                borderColor: color,
+                color,
+              }
+            }}
             onClick={() => handlePageChange(i)}
           >
             {i}

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable no-undef */
 var path = require('path');
 module.exports = {
   mode: 'production',

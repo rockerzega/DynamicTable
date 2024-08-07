@@ -1,10 +1,10 @@
-import React, { useState, useEffect  } from 'react'
-import { ItemOptions } from '../types/Index'
+import React, { useState, useEffect } from 'react'
+import { ItemOptions } from '../types'
 
 const Dropdown: React.FC<{
   data: any[],
   onChange?: (data: any) => void
-}> = ({ data = [], onChange = () => {} }) => {
+}> = ({ data = [], onChange = () => { } }) => {
   const [options, setOptions] = useState<Array<ItemOptions>>([])
   const [selected, setSelected] = useState<Array<number>>([])
   const [show, setShow] = useState(false)
@@ -13,7 +13,7 @@ const Dropdown: React.FC<{
   }, [data.length])
 
   const loadOptions = () => {
-    if(data.length===0)
+    if (data.length === 0)
       return
     console.log('modal options')
     console.log(data)
@@ -140,7 +140,7 @@ const Dropdown: React.FC<{
                   </div>
                 </div>
               </div>
-            ): null}
+            ) : null}
           </div>
         </div>
       </form>

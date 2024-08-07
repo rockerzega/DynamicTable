@@ -3,5 +3,5 @@ import './main.css'
 import './css/other.css'
 import './css/modal.css'
 
-export * from './types/Index'
+export * from './types'
 export default DynamicTable

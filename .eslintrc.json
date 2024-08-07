@@ -1,0 +1,9 @@
+{
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "rules": {
+    "prettier/prettier": "error",
+    "no-unused-vars": "warn",
+    "no-undef": "warn",
+    "@typescript-eslint/no-explicit-any": "off"
+  }
+}
