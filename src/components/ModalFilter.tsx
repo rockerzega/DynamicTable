@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react'
-import Dropdown from './dropdown'
+import Dropdown from './Dropdown'
 import { FilterOutlined } from '@ant-design/icons'
+import React, { useState, useRef, useEffect } from 'react'
 
 const ModalFilter: React.FC<{
   title?: string
@@ -67,8 +67,13 @@ const ModalFilter: React.FC<{
               </select>
             </div>
             <div>
-              {filOpt === 'option' && (<><label>Elija filtro</label>
-                <Dropdown data={listFilters} onChange={handleSecondSelectChange}/></>)
+              {filOpt === 'option' && (<>
+                <label>Elija filtro</label>
+                <Dropdown
+                  data={listFilters}
+                  onChange={handleSecondSelectChange}
+                />
+              </>)
               }
               { filOpt === 'child' && child }
 

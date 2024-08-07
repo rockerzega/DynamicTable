@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react'
-import '../css/other.css'
+import React, { useState, useEffect  } from 'react'
+import { ItemOptions } from '../types/Index'
 
-const Dropdown = ({ data = [], onChange = ()=>{} }) => {
-  const [options, setOptions] = useState([]);
-  const [selected, setSelected] = useState([]);
-  const [show, setShow] = useState(false);
-  const selectRef = useRef();
-
+const Dropdown: React.FC<{
+  data: any[],
+  onChange?: (data: any) => void
+}> = ({ data = [], onChange = () => {} }) => {
+  const [options, setOptions] = useState<Array<ItemOptions>>([])
+  const [selected, setSelected] = useState<Array<number>>([])
+  const [show, setShow] = useState(false)
   useEffect(() => {
-    loadOptions();
-  }, [data.length]);
+    loadOptions()
+  }, [data.length])
 
   const loadOptions = () => {
     if(data.length===0)
@@ -20,12 +21,10 @@ const Dropdown = ({ data = [], onChange = ()=>{} }) => {
       value: option.value,
       text: option.text,
       selected: false
-    }));
-    setOptions(options);
-  };
+    }))
+    setOptions(options)
+  }
 
-  const openDropdown = () => setShow(true);
-  const closeDropdown = () => setShow(false);
   const toggleDropdown = () => {
     console.log(show ? 'cerrar' : 'abrir')
     console.log(selectedValues())
@@ -35,7 +34,7 @@ const Dropdown = ({ data = [], onChange = ()=>{} }) => {
 
   const selectedValues = () => selected.map((index) => options[index].value).join(',');
 
-  const selectOption = (index) => {
+  const selectOption = (index: number) => {
     const newOptions = [...options];
     newOptions[index].selected = !newOptions[index].selected;
     setOptions(newOptions);
@@ -49,7 +48,7 @@ const Dropdown = ({ data = [], onChange = ()=>{} }) => {
     onChange(selectedValues())
   }
 
-  const removeOption = (index) => {
+  const removeOption = (index: number) => {
     console.log('removiendo', index)
     const newOptions = [...options]
     newOptions[index].selected = false
@@ -60,7 +59,6 @@ const Dropdown = ({ data = [], onChange = ()=>{} }) => {
     console.log(selectedValues())
     // onChange(selectedValues())
   }
-
 
   return (
     <div className="w-full flex flex-col items-center mx-auto">

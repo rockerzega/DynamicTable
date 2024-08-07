@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { DynamicTableType } from '../types'
+import { DynamicTableType } from '../types/Index'
 import ModalFilter from './ModalFilter'
 import { MinusOutlined, PlusOutlined, SortAscendingOutlined } from '@ant-design/icons'
-import Pagination from './paginator'
+import Paginator from './Paginator'
 import Spinner from './Spinner'
 
 const DynamicTable: React.FC<DynamicTableType> = ({children, ...props }) => {
@@ -119,10 +119,16 @@ const DynamicTable: React.FC<DynamicTableType> = ({children, ...props }) => {
                           ? column.render(childItem[column.dataIndex], childItem)
                           : column.render('', childItem)
                         return (
-                          <div key={column.dataIndex + index} className="table-div" style={{
-                            justifyContent: `${column.align || 'start'}`,
-                          }}>
-                            {column.title && <><b>{column.title}</b>:</> }
+                          <div
+                            key={column.dataIndex + index}
+                            className="table-div"
+                            style={{
+                              justifyContent: `${column.align || 'start'}`,
+                            }}
+                          >
+                            { column.title && (<>
+                              <b>{column.title}</b>:&nbsp;
+                            </>) }
                             {render}
                           </div>
                         )
@@ -135,10 +141,16 @@ const DynamicTable: React.FC<DynamicTableType> = ({children, ...props }) => {
                       }
                     }
                     return (
-                      <div key={column.dataIndex + index} className="table-div" style={{
-                        justifyContent: `${column.align || 'start'}`,
-                      }}>
-                        <b>{column.title}</b>: {childItem[column.dataIndex]}
+                      <div
+                        key={column.dataIndex + index}
+                        className="table-div"
+                        style={{
+                          justifyContent: `${column.align || 'start'}`,
+                        }}
+                      >
+                        <b>
+                          {column.title}
+                        </b>:&nbsp;{childItem[column.dataIndex]}
                       </div>
                     )
                   })}
@@ -164,7 +176,10 @@ const DynamicTable: React.FC<DynamicTableType> = ({children, ...props }) => {
                           }}
                           onClick={() => toggleRowExpanded(index)}
                         >
-                          {expandedRows[index] ? <MinusOutlined /> : <PlusOutlined />}
+                          { expandedRows[index]
+                            ? <MinusOutlined />
+                            : <PlusOutlined />
+                          }
                         </span>
                       )}
                 </td>
@@ -184,7 +199,11 @@ const DynamicTable: React.FC<DynamicTableType> = ({children, ...props }) => {
                     height: '0px',
                     width: '0px',
                   }}>
-                    {expandable && expandable.expandedRowRender ? expandable.expandedRowRender(item) : (<p>Sin datos</p>)}
+                    {
+                      expandable && expandable.expandedRowRender
+                        ? expandable.expandedRowRender(item)
+                        : (<p>Sin datos</p>)
+                    }
                   </td>
                 </tr>
               )}
@@ -194,10 +213,11 @@ const DynamicTable: React.FC<DynamicTableType> = ({children, ...props }) => {
         </tbody>) : <Spinner color={primaryColor} />}
       </table>
       {pagination.total > 0 && (
-        <Pagination
+        <Paginator
           total={Math.ceil(pagination.total / pagination.defaultPageSize)}
           current={pagination.current}
           onPageChange={(page: number) => handlePages(page)}
+          color={primaryColor}
         />
       )}
     </div>

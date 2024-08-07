@@ -51,3 +51,9 @@ export interface DynamicTableType {
     expandedRowRender: (record: any) => React.ReactNode
   }
 }
+
+export interface ItemOptions {
+  value: string
+  text: string
+  selected: boolean
+}
