@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable no-undef */
 var path = require('path');
 module.exports = {
   mode: 'production',
-  entry: './src/index.js',
+  entry: './src/Index.tsx',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'index.js',
@@ -11,10 +13,22 @@ module.exports = {
     publicPath: '/'
   },
   resolve: {
-    extensions: ['.js', '.jsx'] // Añadir extensiones que Webpack resolverá
+    extensions: ['.js', '.jsx', '.tsx', '.ts'] // Añadir extensiones que Webpack resolverá
   },
   module: {
     rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        include: path.resolve(__dirname, 'src'),
+        exclude: /(node_modules|bower_components|build)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+            plugins: ['@babel/plugin-syntax-dynamic-import'],
+          }
+        }
+      },
       {
         test: /\.(js|jsx)$/,
         include: path.resolve(__dirname, 'src'),
