@@ -1,5 +1,5 @@
 {
-  "name": "dynamic-table",
+  "name": "mobile-table",
   "version": "0.1.0",
   "description": "Tabla responsive",
   "main": "build/index.js",
