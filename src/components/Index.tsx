@@ -1,15 +1,15 @@
 import Spinner from './Spinner'
 import Paginator from './Paginator'
 import ModalFilter from './ModalFilter'
+import ModalSorter from './ModalSorter'
 import React, { FC, useEffect, useState } from 'react'
 import { DynamicTableType, ModalData } from '../types'
 import {
   MinusOutlined,
   PlusOutlined,
-  SortAscendingOutlined,
 } from '@ant-design/icons'
 
-const DynamicTable: FC<DynamicTableType> = ({ children, ...props }) => {
+const MobileTable: FC<DynamicTableType> = ({ children, ...props }) => {
   const { columns, expandable, pagination, onChange, ...otherProps } = props
   const [expandedRows, setExpandedRows] = useState(
     () => new Array(props.dataSource.length).fill(false)
@@ -22,15 +22,17 @@ const DynamicTable: FC<DynamicTableType> = ({ children, ...props }) => {
   const [primaryColor, setPrimaryColor] = useState<string | undefined>(undefined)
   const [currentPage, setCurrentPage] = useState(pagination.current)
 
+  const hasSorter = columns ? columns.some(item => item.sorter && item.dataIndex) : false
   const hasFilter = columns ? columns.some(item => item.filters) : false
   const hasFilterDropdown = columns
     ? columns.some(item => item.filterDropdown)
     : false
-  const modalData: ModalData[] = []
+  const filterData: ModalData[] = []
+  const sorterData = []
   if (hasFilter) {
     columns!.forEach((item) => {
       if (item.filters) {
-        modalData.push({
+        filterData.push({
           label: item.title,
           value: item.dataIndex,
           filters: item.filters
@@ -39,16 +41,20 @@ const DynamicTable: FC<DynamicTableType> = ({ children, ...props }) => {
     })
   }
   if (hasFilterDropdown) {
-    console.log('este es el filterDropdown')
     columns!.forEach((item) => {
       if (item.filterDropdown) {
-        modalData.push({
+        filterData.push({
           label: item.title,
           value: item.dataIndex,
           filterDropdown: item.filterDropdown,
         })
-        console.log('modal filterDropdown', item.title)
-        console.log(item.filterDropdown)
+      }
+    })
+  }
+  if (hasSorter) {
+    columns!.forEach((item) => {
+      if (item.sorter && item.dataIndex) {
+        sorterData.push(item)
       }
     })
   }
@@ -60,6 +66,14 @@ const DynamicTable: FC<DynamicTableType> = ({ children, ...props }) => {
     }, {
       [data.firstSelect]: data.secondSelect
     }, null)
+  }
+
+  const onSorter = (data) => {
+    onChange!({
+      current: currentPage,
+      pageSize: pagination.defaultPageSize,
+      total: pagination.total,
+    }, { ['']: null }, data)
   }
 
   const handlePages = (newPage: number) => {
@@ -77,8 +91,6 @@ const DynamicTable: FC<DynamicTableType> = ({ children, ...props }) => {
 
   useEffect(() => {
     const button = document.querySelector('.ant-btn-primary')
-    console.log('columnas')
-    console.log(columns)
     if (button) {
       const style = window.getComputedStyle(button)
       setPrimaryColor(style.backgroundColor)
@@ -92,14 +104,18 @@ const DynamicTable: FC<DynamicTableType> = ({ children, ...props }) => {
         <div id="buttons" className="flex justify-end w-1/5">
           {hasFilter || hasFilterDropdown
             && (<ModalFilter
-              data={modalData}
+              data={filterData}
               onOk={onOk}
               color={primaryColor}
             />)
           }
-          <button className="open-modal ml-2">
-            {<SortAscendingOutlined />}
-          </button>
+          {hasSorter
+            && (<ModalSorter
+              data={sorterData}
+              onOk={onSorter}
+              color={primaryColor}
+            />)
+          }
         </div>
       </div>
       <div>
@@ -112,8 +128,6 @@ const DynamicTable: FC<DynamicTableType> = ({ children, ...props }) => {
           {!otherProps.isLoading ? (<tbody>
             {props.dataSource.map((item, index) => {
               const { resultados, ...childItem } = item
-              console.log('childItem : ', childItem)
-              console.log('item : ', resultados)
               return (
                 <React.Fragment key={item.id}>
                   <tr key={item.key || `row${index}`}>
@@ -233,4 +247,4 @@ const DynamicTable: FC<DynamicTableType> = ({ children, ...props }) => {
   )
 }
 
-export default DynamicTable
+export default MobileTable

@@ -69,4 +69,5 @@ export interface ModalData {
   value: string
   filters?: Filters
   filterDropdown?: FDropdown
+  sorter?: boolean
 }

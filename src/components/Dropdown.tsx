@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react'
 import { ItemOptions } from '../types'
 
@@ -15,8 +16,6 @@ const Dropdown: React.FC<{
   const loadOptions = () => {
     if (data.length === 0)
       return
-    console.log('modal options')
-    console.log(data)
     const options = data.map((option) => ({
       value: option.value,
       text: option.text,
@@ -26,38 +25,32 @@ const Dropdown: React.FC<{
   }
 
   const toggleDropdown = () => {
-    console.log(show ? 'cerrar' : 'abrir')
-    console.log(selectedValues())
     setShow((prev) => !prev)
     onChange(selectedValues())
   }
 
-  const selectedValues = () => selected.map((index) => options[index].value).join(',');
+  const selectedValues = () => selected.map(
+    (index) => options[index].value
+  ).join(',')
 
   const selectOption = (index: number) => {
     const newOptions = [...options];
-    newOptions[index].selected = !newOptions[index].selected;
+    newOptions[index].selected = !newOptions[index].selected
     setOptions(newOptions);
 
     if (newOptions[index].selected) {
-      setSelected([...selected, index]);
+      setSelected([...selected, index])
     } else {
-      setSelected(selected.filter((i) => i !== index));
+      setSelected(selected.filter((i) => i !== index))
     }
-    console.log('Selected', selectedValues())
     onChange(selectedValues())
   }
 
   const removeOption = (index: number) => {
-    console.log('removiendo', index)
     const newOptions = [...options]
     newOptions[index].selected = false
-    setOptions(newOptions);
-    setSelected(selected.filter((_, i) => i !== index));
-    // console.log(newOptions)
-    console.log(selected)
-    console.log(selectedValues())
-    // onChange(selectedValues())
+    setOptions(newOptions)
+    setSelected(selected.filter((_, i) => i !== index))
   }
 
   return (
@@ -74,7 +67,7 @@ const Dropdown: React.FC<{
                       key={options[index].value}
                       className="flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-full text-teal-700 bg-teal-100 border border-teal-300"
                     >
-                      <div className="text-xs font-normal leading-none max-w-full flex-initial" x-model="options[option]">
+                      <div className="text-xs font-normal leading-none max-w-full flex-initial">
                         {options[index].text}
                       </div>
                       <div className="flex flex-auto flex-row-reverse">
